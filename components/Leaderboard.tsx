@@ -4,6 +4,7 @@ import { StarIcon } from './icons/StarIcon';
 
 interface LeaderboardProps {
   teams: Team[];
+  resetAllTimers: () => void;
 }
 
 const ROW_HEIGHT = 72; // pixels
@@ -53,11 +54,17 @@ const getRankClassNames = (rank: number) => {
   }
 };
 
-export const Leaderboard: React.FC<LeaderboardProps> = ({ teams }) => {
+export const Leaderboard: React.FC<LeaderboardProps> = ({ teams, resetAllTimers }) => {
   return (
     <div className="bg-white dark:bg-slate-800 shadow-lg rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
-      <div className="p-4 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
+      <div className="p-4 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
         <h2 className="text-xl font-bold text-slate-700 dark:text-slate-200">Rankings</h2>
+        <button
+          onClick={resetAllTimers}
+          className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Reset All Timers
+        </button>
       </div>
       {teams.length > 0 ? (
         <ul

@@ -31,8 +31,25 @@ export const useLeaderboard = () => {
   }, []);
 
   const sortedTeams = useMemo(() => {
-    return [...teams].sort((a, b) => a.durationSeconds - b.durationSeconds);
+    return [...teams].sort((a, b) => {
+      // If either team has 0 seconds, put them at the bottom
+      if (a.durationSeconds === 0 && b.durationSeconds === 0) return 0;
+      if (a.durationSeconds === 0) return 1;
+      if (b.durationSeconds === 0) return -1;
+      
+      // For non-zero times, sort by duration (ascending)
+      return a.durationSeconds - b.durationSeconds;
+    });
   }, [teams]);
 
-  return { teams: sortedTeams, updateTime };
+  const resetAllTimers = useCallback(() => {
+    setTeams(currentTeams =>
+      currentTeams.map(team => ({
+        ...team,
+        durationSeconds: 0
+      }))
+    );
+  }, []);
+
+  return { teams: sortedTeams, updateTime, resetAllTimers };
 };

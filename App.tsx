@@ -6,7 +6,7 @@ import { ThemeToggle } from './components/ThemeToggle';
 
 
 const App: React.FC = () => {
-  const { teams, updateTime } = useLeaderboard();
+  const { teams, updateTime, resetAllTimers } = useLeaderboard();
 
   return (
     <div className="min-h-screen font-sans text-slate-800 dark:text-slate-200 transition-colors duration-300">
@@ -35,7 +35,7 @@ const App: React.FC = () => {
             <ScoreInput teams={teams} onUpdateTime={updateTime} />
           </div>
           <div className="md:col-span-2">
-            <Leaderboard teams={teams} />
+            <Leaderboard teams={teams} resetAllTimers={resetAllTimers} />
           </div>
         </main>
       </div>
