@@ -3,13 +3,13 @@ import { Team } from '../types';
 
 interface ScoreInputProps {
   teams: Team[];
-  onUpdateTime: (id: number, minutes: number, seconds: number) => void;
+  onUpdateTime: (id: number, seconds: number, milliseconds: number) => void;
 }
 
 export const ScoreInput: React.FC<ScoreInputProps> = ({ teams, onUpdateTime }) => {
   const [selectedTeamId, setSelectedTeamId] = useState('');
-  const [minutes, setMinutes] = useState('');
   const [seconds, setSeconds] = useState('');
+  const [milliseconds, setMilliseconds] = useState('');
   const [error, setError] = useState('');
 
   const sortedTeamsForDropdown = useMemo(() => {
@@ -20,27 +20,27 @@ export const ScoreInput: React.FC<ScoreInputProps> = ({ teams, onUpdateTime }) =
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const minsNum = parseInt(minutes, 10);
     const secsNum = parseInt(seconds, 10);
+    const msNum = parseInt(milliseconds, 10);
     const teamIdNum = parseInt(selectedTeamId, 10);
 
     if (!selectedTeamId) {
       setError('Please select a team.');
       return;
     }
-    if (isNaN(minsNum) || minutes.trim() === '' || isNaN(secsNum) || seconds.trim() === '') {
+    if (isNaN(secsNum) || seconds.trim() === '' || isNaN(msNum) || milliseconds.trim() === '') {
       setError('Please enter a valid time.');
       return;
     }
-     if (minsNum < 0 || secsNum < 0 || secsNum > 59) {
-        setError('Please enter a valid time (seconds must be 0-59).');
-        return;
+    if (secsNum < 0 || msNum < 0 || msNum > 999) {
+      setError('Please enter a valid time (milliseconds must be 0-999).');
+      return;
     }
     
-    onUpdateTime(teamIdNum, minsNum, secsNum);
+    onUpdateTime(teamIdNum, secsNum, msNum);
     setSelectedTeamId('');
-    setMinutes('');
     setSeconds('');
+    setMilliseconds('');
     setError('');
   };
 
@@ -68,20 +68,6 @@ export const ScoreInput: React.FC<ScoreInputProps> = ({ teams, onUpdateTime }) =
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label htmlFor="minutes" className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">
-              Minutes
-            </label>
-            <input
-              id="minutes"
-              type="number"
-              min="0"
-              value={minutes}
-              onChange={(e) => setMinutes(e.target.value)}
-              placeholder="e.g., 5"
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-brand-700 focus:border-brand-700 transition"
-            />
-          </div>
-          <div>
             <label htmlFor="seconds" className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">
               Seconds
             </label>
@@ -89,10 +75,24 @@ export const ScoreInput: React.FC<ScoreInputProps> = ({ teams, onUpdateTime }) =
               id="seconds"
               type="number"
               min="0"
-              max="59"
               value={seconds}
               onChange={(e) => setSeconds(e.target.value)}
-              placeholder="e.g., 30"
+              placeholder="e.g., 3"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-brand-700 focus:border-brand-700 transition"
+            />
+          </div>
+          <div>
+            <label htmlFor="milliseconds" className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">
+              Milliseconds
+            </label>
+            <input
+              id="milliseconds"
+              type="number"
+              min="0"
+              max="999"
+              value={milliseconds}
+              onChange={(e) => setMilliseconds(e.target.value)}
+              placeholder="e.g., 450"
               className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-brand-700 focus:border-brand-700 transition"
             />
           </div>

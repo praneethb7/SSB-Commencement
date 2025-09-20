@@ -9,16 +9,16 @@ interface LeaderboardProps {
 
 const ROW_HEIGHT = 72; // pixels
 
-// Helper to format seconds into MM:SS
+// Helper to format seconds into SS.mmm
 const formatDuration = (totalSeconds: number) => {
     if (isNaN(totalSeconds) || totalSeconds < 0) {
-      return '00:00';
+      return '00.000';
     }
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    const paddedMinutes = String(minutes).padStart(2, '0');
+    const seconds = Math.floor(totalSeconds);
+    const milliseconds = Math.round((totalSeconds - seconds) * 1000);
     const paddedSeconds = String(seconds).padStart(2, '0');
-    return `${paddedMinutes}:${paddedSeconds}`;
+    const paddedMilliseconds = String(milliseconds).padStart(3, '0');
+    return `${paddedSeconds}.${paddedMilliseconds}`;
 };
 
 const getRankClassNames = (rank: number) => {
