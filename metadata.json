@@ -1,0 +1,5 @@
+{
+  "name": "Peping - SSB Commencement - Activity Leaderboard",
+  "description": "A dynamic leaderboard to track activity timings for teams. Users can select a team and input their completion time in minutes and seconds. The leaderboard updates in real-time, ranking teams by the shortest duration.",
+  "requestFramePermissions": []
+}
